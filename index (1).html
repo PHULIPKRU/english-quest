@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>English Quest 21 ด่าน</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Sarabun:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* แนวคิด: เส้นทางเดินเรือ 21 ท่า ธีมทะเลอันดามันโทนเดียว การ์ดด่านเรียงเป็นตาราง มือถือ 2 คอลัมน์ จอใหญ่ขยายอัตโนมัติ */
+:root{
+  color-scheme: dark;
+  --sea-900:#062a33;
+  --sea-800:#0b3945;
+  --sea-700:#134f5d;
+  --foam:#eaf7f5;
+  --mist:#9fc6c4;
+  --aqua:#3fd0c1;
+  --sun:#ffc94a;
+  --coral:#ff8370;
+  --font-display:"Mitr","Leelawadee UI","Thonburi",sans-serif;
+  --font-body:"Sarabun","Leelawadee UI","Thonburi",sans-serif;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--sea-900);color:var(--foam);font-family:var(--font-body);font-size:16px;line-height:1.55;
+  background-image:radial-gradient(1200px 500px at 80% -10%,rgba(63,208,193,.13),transparent 60%)}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0;text-wrap:balance}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:16px 16px 56px;display:flex;flex-direction:column;gap:18px}
+
+.demo{background:var(--sun);color:#3a2a00;border-radius:var(--radius);padding:10px 14px;display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;font-size:14px}
+.demo strong{font-family:var(--font-display);font-weight:500}
+.demo span{flex:1 1 220px}
+.demo button{background:#3a2a00;color:#ffe9ae;border:0;border-radius:999px;padding:6px 14px;cursor:pointer}
+
+.top{background:var(--sea-800);border:1px solid var(--sea-700);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:14px}
+.who{display:flex;gap:12px;align-items:center}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--sea-700);display:grid;place-items:center;font-family:var(--font-display);font-size:22px;overflow:hidden;flex:none}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.who small{color:var(--mist);display:block}
+.who h1{font-size:22px;line-height:1.25}
+.stats{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px;color:var(--mist)}
+.stats b{font-family:var(--font-display);font-weight:500;font-size:22px;color:var(--foam);font-variant-numeric:tabular-nums;margin-right:4px}
+.bar{height:12px;border-radius:999px;background:var(--sea-900);overflow:hidden;display:flex}
+.bar i{display:block;height:100%}
+.bar .ok{background:var(--sun)}
+.bar .wait{background:repeating-linear-gradient(135deg,var(--aqua) 0 6px,#2aa89b 6px 12px)}
+.legend{display:flex;gap:16px;font-size:13px;color:var(--mist);flex-wrap:wrap}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;background:var(--sun)}
+.legend span.w::before{background:var(--aqua)}
+
+.banner{border-radius:var(--radius);padding:14px 16px;border:1px solid var(--sea-700);background:var(--sea-800)}
+.banner.win{background:var(--sun);color:#3a2a00;border-color:var(--sun)}
+.banner h2{font-size:18px}
+.banner p{margin:4px 0 0}
+
+.rules{background:transparent;border:1px dashed var(--sea-700);border-radius:var(--radius);padding:12px 16px;color:var(--mist);font-size:15px}
+.rules summary{cursor:pointer;color:var(--foam);font-family:var(--font-display)}
+.rules ol{margin:8px 0 0;padding-left:20px}
+
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(min-width:620px){.map{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}}
+.lv{appearance:none;text-align:left;background:var(--sea-800);border:1px solid var(--sea-700);border-radius:var(--radius);padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:128px;transition:transform .15s,border-color .15s}
+.lv:hover{transform:translateY(-2px);border-color:var(--aqua)}
+.lv .n{font-family:var(--font-display);font-size:13px;color:var(--mist);display:flex;justify-content:space-between;align-items:center;gap:6px}
+.lv .n b{font-weight:500;font-size:26px;color:var(--foam);font-variant-numeric:tabular-nums;line-height:1}
+.lv .t{font-family:var(--font-display);font-size:16px;line-height:1.3;flex:1;overflow-wrap:anywhere}
+.chip{align-self:flex-start;font-size:12.5px;border-radius:999px;padding:2px 10px;border:1px solid currentColor;white-space:nowrap}
+.lv.open{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(63,208,193,.25)}
+.lv.open .chip{background:var(--aqua);color:#04302c;border-color:var(--aqua)}
+.lv.pass .chip{background:var(--sun);color:#3a2a00;border-color:var(--sun)}
+.lv.pass .n b{color:var(--sun)}
+.lv.pending .chip{color:var(--aqua)}
+.lv.fail{border-color:var(--coral)}
+.lv.fail .chip{background:var(--coral);color:#3d0d05;border-color:var(--coral)}
+.lv.locked{opacity:.55}
+.lv.locked .chip{color:var(--mist)}
+.lv.final{grid-column:1/-1;min-height:0;background:linear-gradient(120deg,var(--sea-800),#17475a)}
+.lv.final .t{font-size:19px}
+.lv.final p{margin:0;color:var(--mist);font-size:14.5px;font-family:var(--font-body)}
+
+.overlay{position:fixed;inset:0;background:rgba(2,18,22,.72);display:none;align-items:flex-end;justify-content:center;z-index:10}
+.overlay.on{display:flex}
+@media(min-width:620px){.overlay{align-items:center;padding:24px}}
+.sheet{background:var(--sea-800);border:1px solid var(--sea-700);width:100%;max-width:560px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 16px 22px;display:flex;flex-direction:column;gap:14px}
+@media(min-width:620px){.sheet{border-radius:20px;padding:22px}}
+.sheet header{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.sheet header small{color:var(--aqua);font-family:var(--font-display)}
+.sheet h2{font-size:22px;line-height:1.25}
+.x{background:var(--sea-700);border:0;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:18px;flex:none}
+.steps{margin:0;padding-left:20px;color:var(--mist)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-family:var(--font-display);font-size:15px}
+.field .hint{font-size:13.5px;color:var(--mist)}
+.field input[type=number],.field input[type=text],.field input[type=url],.field textarea{background:var(--sea-900);border:1px solid var(--sea-700);border-radius:10px;padding:10px 12px;width:100%}
+.field textarea{min-height:84px;resize:vertical}
+.pick{border:1.5px dashed var(--sea-700);border-radius:12px;padding:10px;display:flex;flex-direction:column;gap:8px;background:var(--sea-900)}
+.pick input{max-width:100%}
+.pick img{max-width:100%;max-height:180px;border-radius:8px;object-fit:contain;align-self:flex-start}
+.pair{display:grid;grid-template-columns:1fr;gap:14px}
+.err{background:rgba(255,131,112,.14);border:1px solid var(--coral);color:#ffd2ca;border-radius:10px;padding:10px 12px;display:none}
+.err.on{display:block}
+.note{background:var(--sea-900);border-radius:10px;padding:10px 12px;color:var(--mist)}
+.note b{color:var(--foam);font-weight:500}
+.go{background:var(--aqua);color:#04302c;border:0;border-radius:12px;padding:13px 16px;font-family:var(--font-display);font-size:17px;cursor:pointer}
+.go[disabled]{opacity:.6;cursor:wait}
+.link{color:var(--aqua)}
+dl.sum{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0}
+dl.sum dt{color:var(--mist)}
+dl.sum dd{margin:0}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--foam);color:#04302c;border-radius:999px;padding:10px 18px;font-family:var(--font-display);z-index:20;display:none;max-width:calc(100% - 32px);text-align:center}
+.toast.on{display:block}
+.loading{min-height:60vh;display:grid;place-items:center;color:var(--mist);text-align:center;padding:24px}
+@media(prefers-reduced-motion:reduce){.lv{transition:none}.lv:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="loading" id="loading">กำลังเชื่อมต่อ LINE…</div></div>
+<div class="overlay" id="overlay"><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* ============ ตั้งค่า: แก้ 2 บรรทัดแรกหลังติดตั้งตามคู่มือ ============ */
+const CONFIG = {
+  LIFF_ID: "2012651182-FZzRzRxm",
+  API_URL: "https://script.google.com/macros/s/AKfycbzpHUGFry2hbZuyiiorgbSIPrKL-xYfXaaOOUcqtSvcoitDk2lY3B5XNOezKxxIneq8aw/exec", 
+  ED_URL: "",    // ลิงก์เข้าระบบ English Discoveries ของมหาวิทยาลัย (เว้นว่างได้)
+  PASS_SCORE: 80
+};
+/* ถ้า LIFF_ID หรือ API_URL ว่าง หน้าเกมจะเปิดเป็นโหมดทดลอง เก็บข้อมูลในเครื่องเท่านั้น */
+
+const LEVELS = ["Couples","Sport And Fitness","Problems At Work","A Helping Hand","Health And Happiness",
+  "Going Out","Restaurant Reviews","Meeting People","Ecotourism","Personality Types",
+  "Cultural Differences","Life In The City","Dangerous Sports","Complaints","Business Strategies",
+  "Communication","Medical Issues","How Smart Are You?","Socially Conscious Business","Architecture",
+  "English at Work"];
+const TOTAL = LEVELS.length;
+const ST = {PENDING:"รอตรวจ", PASS:"ผ่าน", FAIL:"ไม่ผ่าน"};
+const DEMO = !CONFIG.LIFF_ID || !CONFIG.API_URL;
+const DEMO_KEY = "english-quest-demo";
+
+let state = {registered:false, player:null, levels:{}};
+let profile = {displayName:"", pictureUrl:""};
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- กติกาปลดล็อกด่าน ---------- */
+function isUnlocked(n){
+  if (n === 1) return true;
+  if (n <= 20){ const p = state.levels[n-1]; return !!p && p.status !== ST.FAIL; }
+  for (let i = 1; i <= 20; i++){ const p = state.levels[i]; if (!p || p.status === ST.FAIL) return false; }
+  return true;
+}
+function levelKey(n){
+  const r = state.levels[n];
+  if (r) return r.status === ST.PASS ? "pass" : r.status === ST.FAIL ? "fail" : "pending";
+  return isUnlocked(n) ? "open" : "locked";
+}
+const KEY_LABEL = {pass:"ผ่านแล้ว", pending:"ส่งแล้ว รอตรวจ", fail:"ไม่ผ่าน ส่งใหม่", open:"พร้อมเล่น", locked:"ยังล็อกอยู่"};
+function validateLevel(pct, score){
+  if (!(pct >= 0 && pct <= 100) || !(score >= 0 && score <= 100)) return "กรอกตัวเลขระหว่าง 0 ถึง 100";
+  if (pct !== 100) return "ต้องอบรมให้ครบ 100% ก่อน ตอนนี้กรอกไว้ " + pct + "% กลับไปเรียนให้ครบแล้วค่อยส่ง";
+  if (score < CONFIG.PASS_SCORE) return "คะแนนทดสอบต้องได้ " + CONFIG.PASS_SCORE + "% ขึ้นไป ตอนนี้ได้ " + score + "% กลับไปทำแบบทดสอบอีกครั้งแล้วค่อยส่ง";
+  return "";
+}
+
+/* ---------- เชื่อมต่อหลังบ้าน ---------- */
+async function api(action, data){
+  const res = await fetch(CONFIG.API_URL, {
+    method:"POST",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body: JSON.stringify(Object.assign({action, token: liff.getAccessToken()}, data || {}))
+  });
+  const j = await res.json();
+  if (!j.ok){
+    if (j.error === "LOGIN_EXPIRED"){ liff.logout(); location.reload(); }
+    throw new Error(j.error || "ระบบขัดข้อง ลองใหม่อีกครั้ง");
+  }
+  return j;
+}
+function loadScript(src){
+  return new Promise((ok, no) => { const s = document.createElement("script"); s.src = src; s.onload = ok;
+    s.onerror = () => no(new Error("โหลด LIFF SDK ไม่ได้ ตรวจสอบอินเทอร์เน็ต")); document.head.appendChild(s); });
+}
+
+/* ---------- โหมดทดลอง ---------- */
+function demoSeed(){
+  return {registered:true, player:{fullName:"ผู้เล่นทดลอง", dept:"สำนักงานอธิการบดี"}, levels:{
+    1:{status:ST.PASS, pct:100, score:90, at:"ตัวอย่าง"},
+    2:{status:ST.PASS, pct:100, score:85, at:"ตัวอย่าง"},
+    3:{status:ST.PENDING, pct:100, score:80, at:"ตัวอย่าง"}}};
+}
+function demoLoad(){ try{ const s = localStorage.getItem(DEMO_KEY); if (s) return JSON.parse(s); }catch(e){} return demoSeed(); }
+function demoSave(){ try{ localStorage.setItem(DEMO_KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ---------- ไฟล์ ---------- */
+function compressImage(file){
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file), img = new Image();
+    img.onload = () => {
+      const s = Math.min(1, 1400 / Math.max(img.width, img.height));
+      const c = document.createElement("canvas");
+      c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      resolve(c.toDataURL("image/jpeg", 0.78).split(",")[1]);
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("เปิดไฟล์ภาพไม่ได้ ลองเลือกไฟล์ใหม่")); };
+    img.src = url;
+  });
+}
+function fileToBase64(file){
+  return new Promise((resolve, reject) => { const r = new FileReader();
+    r.onload = () => resolve(String(r.result).split(",")[1]);
+    r.onerror = () => reject(new Error("อ่านไฟล์ไม่ได้ ลองเลือกไฟล์ใหม่")); r.readAsDataURL(file); });
+}
+
+/* ---------- หน้าหลัก ---------- */
+function render(){
+  let sent = 0, passed = 0;
+  for (let i = 1; i <= TOTAL; i++){ const r = state.levels[i]; if (r && r.status !== ST.FAIL) sent++; if (r && r.status === ST.PASS) passed++; }
+  const name = (state.player && state.player.fullName) || profile.displayName || "ผู้เล่น";
+  const avatar = profile.pictureUrl ? '<img src="' + esc(profile.pictureUrl) + '" alt="">' : esc(name.charAt(0));
+  let banner = "";
+  if (passed === TOTAL) banner = '<div class="banner win"><h2>ภารกิจสำเร็จ ผ่านครบ 21 ด่าน</h2><p>ผู้ตรวจยืนยันแล้วว่าอบรมครบ 100% และผ่านแบบทดสอบ ' + CONFIG.PASS_SCORE + '% ขึ้นไปทุกบท</p></div>';
+  else if (sent === TOTAL) banner = '<div class="banner"><h2>ส่งหลักฐานครบ 21 ด่านแล้ว</h2><p>รอผู้ตรวจยืนยันผล ตรวจแล้ว ' + passed + ' จาก ' + TOTAL + ' ด่าน</p></div>';
+
+  let cards = "";
+  for (let n = 1; n <= TOTAL; n++){
+    const k = levelKey(n), fin = n === TOTAL;
+    cards += '<button type="button" class="lv ' + k + (fin ? " final" : "") + '" data-level="' + n + '">' +
+      '<span class="n"><span>ด่าน</span><b>' + n + '</b></span>' +
+      '<span class="t">' + esc(LEVELS[n-1]) + '</span>' +
+      (fin ? '<p>ด่านสุดท้าย อัดคลิปวิดีโอนำทักษะจาก 20 ด่านไปใช้ในการปฏิบัติงานจริง</p>' : '') +
+      '<span class="chip">' + KEY_LABEL[k] + '</span></button>';
+  }
+  $("app").innerHTML =
+    (DEMO ? '<div class="demo"><span><strong>โหมดทดลอง</strong> ข้อมูลตัวอย่าง เก็บในเครื่องนี้เท่านั้น ยังไม่ได้เชื่อม LINE</span>' +
+      '<button type="button" id="demo-approve">จำลองผู้ตรวจ ให้ผ่านทุกด่านที่ส่ง</button><button type="button" id="demo-reset">เริ่มใหม่</button></div>' : '') +
+    '<section class="top"><div class="who"><div class="avatar">' + avatar + '</div><div><small>English Quest · มหาวิทยาลัยราชภัฏภูเก็ต</small><h1>' + esc(name) + '</h1></div></div>' +
+    '<div class="stats"><span><b>' + sent + '/' + TOTAL + '</b>ด่านที่ส่งแล้ว</span><span><b>' + passed + '/' + TOTAL + '</b>ด่านที่ผู้ตรวจให้ผ่าน</span></div>' +
+    '<div class="bar" aria-hidden="true"><i class="ok" style="width:' + (passed/TOTAL*100) + '%"></i><i class="wait" style="width:' + ((sent-passed)/TOTAL*100) + '%"></i></div>' +
+    '<div class="legend"><span>ผ่านแล้ว</span><span class="w">รอตรวจ</span></div></section>' +
+    banner +
+    '<details class="rules"><summary>กติกาการเล่น</summary><ol>' +
+    '<li>เรียนแต่ละบทในระบบ English Discoveries ให้ครบ 100%</li>' +
+    '<li>ทำแบบทดสอบท้ายบทให้ได้ ' + CONFIG.PASS_SCORE + '% ขึ้นไป</li>' +
+    '<li>แคปหน้าจอ 2 ภาพ (การอบรมครบ และผลทดสอบ) แล้วส่งในด่านนั้น ด่านถัดไปจะปลดล็อก</li>' +
+    '<li>ส่งครบ 20 ด่านแล้ว ด่าน 21 จะเปิดให้ส่งคลิปวิดีโอ</li>' +
+    '<li>จบภารกิจเมื่อผู้ตรวจยืนยันผลครบทั้ง 21 ด่าน</li></ol></details>' +
+    '<section class="map" aria-label="แผนที่ด่าน">' + cards + '</section>';
+}
+
+/* ---------- หน้าต่างด่าน ---------- */
+let busy = false;
+function openSheet(html){ $("sheet").innerHTML = html; $("overlay").classList.add("on"); const x = $("sheet").querySelector(".x"); if (x) x.focus(); }
+function closeSheet(){ if (busy) return; $("overlay").classList.remove("on"); $("sheet").innerHTML = ""; }
+function head(n){ return '<header><div><small>ด่าน ' + n + ' จาก ' + TOTAL + '</small><h2 id="sheet-title">' + esc(LEVELS[n-1]) + '</h2></div><button type="button" class="x" data-close aria-label="ปิด">✕</button></header>'; }
+
+function openLevel(n){
+  const k = levelKey(n), r = state.levels[n];
+  if (k === "locked"){
+    openSheet(head(n) + '<div class="note">' + (n === TOTAL ? 'ส่งหลักฐานให้ครบ 20 ด่านก่อน ด่านสุดท้ายจึงจะเปิด' : 'ส่งหลักฐาน <b>ด่าน ' + (n-1) + ' ' + esc(LEVELS[n-2]) + '</b> ก่อน ด่านนี้จึงจะเปิด') + '</div>');
+    return;
+  }
+  if (k === "pass" || k === "pending"){
+    openSheet(head(n) + '<dl class="sum"><dt>สถานะ</dt><dd>' + KEY_LABEL[k] + '</dd>' +
+      (n < TOTAL ? '<dt>การอบรม</dt><dd>' + esc(r.pct) + '%</dd><dt>คะแนนทดสอบ</dt><dd>' + esc(r.score) + '%</dd>' : '') +
+      '<dt>ส่งเมื่อ</dt><dd>' + esc(r.at || "-") + '</dd></dl>' +
+      (r.comment ? '<div class="note"><b>ผู้ตรวจ:</b> ' + esc(r.comment) + '</div>' : '') +
+      (k === "pending" ? '<div class="note">ผู้ตรวจจะเปิดดูภาพหลักฐานและยืนยันผลให้ ระหว่างนี้เล่นด่านถัดไปได้เลย</div>' : ''));
+    return;
+  }
+  const failNote = k === "fail" ? '<div class="err on"><b>ผู้ตรวจให้ส่งใหม่</b>' + (r.comment ? ' เหตุผล: ' + esc(r.comment) : '') + '</div>' : '';
+  if (n < TOTAL){
+    openSheet(head(n) + failNote +
+      '<ol class="steps"><li>เข้าเรียน Unit ' + n + ' ให้ครบ 100%</li><li>ทำแบบทดสอบให้ได้ ' + CONFIG.PASS_SCORE + '% ขึ้นไป</li><li>แคปหน้าจอ 2 ภาพแล้วส่งที่นี่</li></ol>' +
+      (CONFIG.ED_URL ? '<a class="link" href="' + esc(CONFIG.ED_URL) + '" target="_blank" rel="noopener">เปิดระบบ English Discoveries</a>' : '') +
+      '<form id="level-form" class="pair" novalidate>' +
+      '<div class="field"><label for="f-train">1. ภาพหน้าจอการอบรมครบ</label><span class="hint">ให้เห็นชื่อบทและ Completion 100%</span><div class="pick"><input type="file" accept="image/*" id="f-train"><img id="p-train" alt="" hidden></div></div>' +
+      '<div class="field"><label for="f-pct">การอบรมครบกี่เปอร์เซ็นต์</label><input type="number" inputmode="numeric" min="0" max="100" id="f-pct" placeholder="เช่น 100"></div>' +
+      '<div class="field"><label for="f-test">2. ภาพหน้าจอผลการทดสอบ</label><span class="hint">ให้เห็นชื่อบทและคะแนนที่ได้</span><div class="pick"><input type="file" accept="image/*" id="f-test"><img id="p-test" alt="" hidden></div></div>' +
+      '<div class="field"><label for="f-score">คะแนนทดสอบที่ได้ (%)</label><input type="number" inputmode="numeric" min="0" max="100" id="f-score" placeholder="เช่น 85"></div>' +
+      '<div class="err" id="f-err" role="alert"></div>' +
+      '<button class="go" type="submit" id="f-go" data-level="' + n + '">ส่งหลักฐานด่าน ' + n + '</button></form>');
+  } else {
+    openSheet(head(n) + failNote +
+      '<ol class="steps"><li>อัดคลิปวิดีโอที่คุณใช้ทักษะภาษาอังกฤษจาก 20 ด่านในการปฏิบัติงานจริง</li><li>วางลิงก์คลิป หรือแนบไฟล์ขนาดไม่เกิน 20 MB</li></ol>' +
+      '<form id="level-form" class="pair" novalidate>' +
+      '<div class="field"><label for="f-vlink">ลิงก์คลิปวิดีโอ</label><span class="hint">เช่น Google Drive หรือ YouTube ที่เปิดสิทธิ์ให้ผู้ตรวจดูได้</span><input type="url" id="f-vlink" placeholder="https://"></div>' +
+      '<div class="field"><label for="f-vfile">หรือแนบไฟล์วิดีโอ</label><div class="pick"><input type="file" accept="video/*" id="f-vfile"></div></div>' +
+      '<div class="field"><label for="f-note">อธิบายสั้น ๆ ว่านำทักษะไปใช้กับงานอะไร</label><textarea id="f-note" maxlength="1000"></textarea></div>' +
+      '<div class="err" id="f-err" role="alert"></div>' +
+      '<button class="go" type="submit" id="f-go" data-level="' + n + '">ส่งคลิปด่านสุดท้าย</button></form>');
+  }
+}
+function showErr(msg){ const e = $("f-err"); if (!e) return; e.textContent = msg; e.classList.toggle("on", !!msg); if (msg) e.scrollIntoView({block:"nearest"}); }
+function setBusy(on, label){ busy = on; const b = $("f-go"); if (!b) return; b.disabled = on; if (on){ b.dataset.label = b.textContent; b.textContent = label || "กำลังส่ง…"; } else if (b.dataset.label) b.textContent = b.dataset.label; }
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove("on"), 3600); }
+function nowText(){ const d = new Date(), p = x => String(x).padStart(2, "0"); return d.getFullYear() + "-" + p(d.getMonth()+1) + "-" + p(d.getDate()) + " " + p(d.getHours()) + ":" + p(d.getMinutes()); }
+
+async function submitLevel(n){
+  if (busy) return;
+  showErr("");
+  let payload = {level:n};
+  try{
+    if (n < TOTAL){
+      const train = $("f-train").files[0], test = $("f-test").files[0];
+      const pctRaw = $("f-pct").value.trim(), scoreRaw = $("f-score").value.trim();
+      if (!train) return showErr("แนบภาพหน้าจอการอบรมก่อนส่ง");
+      if (!test) return showErr("แนบภาพหน้าจอผลการทดสอบก่อนส่ง");
+      if (pctRaw === "" || scoreRaw === "") return showErr("กรอกเปอร์เซ็นต์การอบรมและคะแนนทดสอบให้ครบ");
+      const pct = Number(pctRaw), score = Number(scoreRaw);
+      const bad = validateLevel(pct, score);
+      if (bad) return showErr(bad);
+      setBusy(true, "กำลังย่อภาพและส่ง…");
+      payload.pct = pct; payload.score = score;
+      if (!DEMO){ payload.trainImage = await compressImage(train); payload.testImage = await compressImage(test); }
+    } else {
+      const link = $("f-vlink").value.trim(), vf = $("f-vfile").files[0];
+      payload.note = $("f-note").value.trim();
+      if (!link && !vf) return showErr("วางลิงก์คลิป หรือแนบไฟล์วิดีโออย่างใดอย่างหนึ่ง");
+      if (link && !/^https?:\/\/\S+$/i.test(link)) return showErr("ลิงก์ต้องขึ้นต้นด้วย https://");
+      if (vf && vf.size > 20 * 1024 * 1024) return showErr("ไฟล์ใหญ่เกิน 20 MB อัปโหลดขึ้น Google Drive แล้ววางลิงก์แทน");
+      if (!payload.note) return showErr("อธิบายสั้น ๆ ว่านำทักษะไปใช้กับงานอะไร");
+      setBusy(true, "กำลังอัปโหลด อาจใช้เวลาสักครู่…");
+      payload.videoLink = link;
+      if (vf && !DEMO){ payload.videoData = await fileToBase64(vf); payload.videoMime = vf.type || "video/mp4"; payload.videoName = vf.name; }
+    }
+    if (DEMO){
+      state.levels[n] = {status:ST.PENDING, pct:payload.pct, score:payload.score, at:nowText()};
+      demoSave();
+    } else {
+      const r = await api("submit", payload);
+      state = r.state;
+    }
+    setBusy(false); closeSheet(); render();
+    toast(n < TOTAL ? "ส่งด่าน " + n + " แล้ว ด่านถัดไปเปิดให้เล่น" : "ส่งคลิปแล้ว รอผู้ตรวจยืนยันผล");
+  }catch(e){ setBusy(false); showErr(e.message); }
+}
+
+/* ---------- ลงทะเบียน ---------- */
+function openRegister(){
+  openSheet('<header><div><small>เริ่มภารกิจ</small><h2 id="sheet-title">ลงทะเบียนผู้เล่น</h2></div></header>' +
+    '<form id="reg-form" class="pair" novalidate>' +
+    '<div class="field"><label for="r-name">ชื่อ-นามสกุล</label><input type="text" id="r-name" maxlength="120" autocomplete="name"></div>' +
+    '<div class="field"><label for="r-dept">หน่วยงาน / คณะ</label><input type="text" id="r-dept" maxlength="120"></div>' +
+    '<div class="err" id="f-err" role="alert"></div>' +
+    '<button class="go" type="submit" id="f-go">เริ่มเล่น</button></form>');
+  busy = true; // ปิดหน้าต่างไม่ได้จนกว่าจะลงทะเบียน
+}
+async function submitRegister(){
+  const fullName = $("r-name").value.trim(), dept = $("r-dept").value.trim();
+  if (!fullName || !dept) return showErr("กรอกชื่อ-นามสกุลและหน่วยงานให้ครบ");
+  const b = $("f-go"); b.disabled = true; b.textContent = "กำลังบันทึก…";
+  try{ const r = await api("register", {fullName, dept}); state = r.state; busy = false; closeSheet(); render(); toast("ลงทะเบียนแล้ว เริ่มที่ด่าน 1 ได้เลย"); }
+  catch(e){ b.disabled = false; b.textContent = "เริ่มเล่น"; showErr(e.message); }
+}
+
+/* ---------- เหตุการณ์ ---------- */
+document.addEventListener("click", e => {
+  const lv = e.target.closest(".lv"); if (lv) return openLevel(Number(lv.dataset.level));
+  if (e.target.closest("[data-close]") || e.target === $("overlay")) return closeSheet();
+  if (e.target.id === "demo-reset"){ state = demoSeed(); demoSave(); render(); toast("เริ่มโหมดทดลองใหม่แล้ว"); }
+  if (e.target.id === "demo-approve"){ Object.keys(state.levels).forEach(k => state.levels[k].status = ST.PASS); demoSave(); render(); toast("จำลองผลตรวจ: ผ่านทุกด่านที่ส่ง"); }
+});
+document.addEventListener("submit", e => {
+  e.preventDefault();
+  if (e.target.id === "level-form") submitLevel(Number($("f-go").dataset.level));
+  if (e.target.id === "reg-form") submitRegister();
+});
+document.addEventListener("change", e => {
+  const map = {"f-train":"p-train", "f-test":"p-test"}, pid = map[e.target.id];
+  if (!pid) return;
+  const img = $(pid), f = e.target.files[0];
+  if (f){ img.src = URL.createObjectURL(f); img.hidden = false; } else img.hidden = true;
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeSheet(); });
+
+/* ---------- เริ่มทำงาน ---------- */
+async function init(){
+  if (DEMO){ state = demoLoad(); profile = {displayName:"ผู้เล่นทดลอง", pictureUrl:""}; render(); return; }
+  try{
+    await loadScript("https://static.line-scdn.net/liff/edge/2/sdk.js");
+    await liff.init({liffId: CONFIG.LIFF_ID, withLoginOnExternalBrowser: true});
+    if (!liff.isLoggedIn()){ liff.login(); return; }
+    profile = await liff.getProfile();
+    const r = await api("state");
+    state = r.state;
+    render();
+    if (!state.registered) openRegister();
+  }catch(e){
+    $("app").innerHTML = '<div class="loading"><div><h2>เปิดเกมไม่สำเร็จ</h2><p>' + esc(e.message) + '</p><p>ปิดแล้วเปิดลิงก์เกมใหม่อีกครั้ง หากยังไม่ได้ให้แจ้งผู้ดูแลระบบ</p></div></div>';
+  }
+}
+init();
+</script>
+</body>
+</html>
