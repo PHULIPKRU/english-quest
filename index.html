@@ -61,26 +61,47 @@ button,input,textarea{font:inherit;color:inherit}
 .rules summary{cursor:pointer;color:var(--foam);font-family:var(--font-display)}
 .rules ol{margin:8px 0 0;padding-left:20px}
 
-.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-@media(min-width:620px){.map{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}}
-.lv{appearance:none;text-align:left;background:var(--sea-800);border:1px solid var(--sea-700);border-radius:var(--radius);padding:12px;cursor:pointer;display:flex;flex-direction:column;gap:6px;min-height:128px;transition:transform .15s,border-color .15s}
-.lv:hover{transform:translateY(-2px);border-color:var(--aqua)}
-.lv .n{font-family:var(--font-display);font-size:13px;color:var(--mist);display:flex;justify-content:space-between;align-items:center;gap:6px}
-.lv .n b{font-weight:500;font-size:26px;color:var(--foam);font-variant-numeric:tabular-nums;line-height:1}
+.coach{display:flex;gap:12px;align-items:center}
+.mascot{width:84px;flex:none}
+.mascot svg{width:100%;height:auto;display:block;animation:bob 2.6s ease-in-out infinite}
+.bubble{margin:0;background:var(--foam);color:#04302c;border-radius:16px 16px 16px 4px;padding:10px 14px;font-family:var(--font-display);font-size:15.5px;line-height:1.4}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes pop{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+
+.map{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:620px){.map{grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}}
+.lv{appearance:none;text-align:left;background:var(--sea-800);border:2px solid var(--sea-700);border-radius:18px;padding:0;cursor:pointer;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 5px 0 #021a21;transition:transform .15s,border-color .15s}
+.lv:hover{transform:translateY(-2px);border-color:var(--hue)}
+.lv:active{transform:translateY(3px);box-shadow:0 2px 0 #021a21}
+.scene{height:88px;display:flex;align-items:center;justify-content:center;position:relative;background:var(--hue-bg);color:var(--hue)}
+.scene>svg{width:56px;height:56px}
+.num{position:absolute;left:9px;top:8px;font-family:var(--font-display);font-size:13px;color:var(--foam);background:rgba(2,26,33,.65);border-radius:999px;padding:1px 10px;font-variant-numeric:tabular-nums}
+.badge{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#021a21;color:var(--foam)}
+.badge svg{width:17px;height:17px}
+.info{padding:10px 12px 13px;display:flex;flex-direction:column;gap:8px;flex:1}
 .lv .t{font-family:var(--font-display);font-size:16px;line-height:1.3;flex:1;overflow-wrap:anywhere}
 .chip{align-self:flex-start;font-size:12.5px;border-radius:999px;padding:2px 10px;border:1px solid currentColor;white-space:nowrap}
-.lv.open{border-color:var(--aqua);box-shadow:0 0 0 2px rgba(63,208,193,.25)}
+.lv.open{border-color:var(--aqua);box-shadow:0 5px 0 #021a21,0 0 0 3px rgba(63,208,193,.3)}
 .lv.open .chip{background:var(--aqua);color:#04302c;border-color:var(--aqua)}
+.lv.open .scene>svg{animation:pop 1.6s ease-in-out infinite}
+.lv.pass{border-color:var(--sun)}
 .lv.pass .chip{background:var(--sun);color:#3a2a00;border-color:var(--sun)}
-.lv.pass .n b{color:var(--sun)}
+.lv.pass .badge{background:var(--sun);color:#3a2a00}
 .lv.pending .chip{color:var(--aqua)}
+.lv.pending .badge{background:var(--aqua);color:#04302c}
 .lv.fail{border-color:var(--coral)}
 .lv.fail .chip{background:var(--coral);color:#3d0d05;border-color:var(--coral)}
-.lv.locked{opacity:.55}
+.lv.fail .badge{background:var(--coral);color:#3d0d05}
+.lv.locked .scene{filter:grayscale(1);opacity:.5}
+.lv.locked .t{color:var(--mist)}
 .lv.locked .chip{color:var(--mist)}
-.lv.final{grid-column:1/-1;min-height:0;background:linear-gradient(120deg,var(--sea-800),#17475a)}
-.lv.final .t{font-size:19px}
-.lv.final p{margin:0;color:var(--mist);font-size:14.5px;font-family:var(--font-body)}
+.lv.final{grid-column:1/-1;flex-direction:row}
+.lv.final .scene{width:112px;height:auto;min-height:124px;flex:none}
+.lv.final .t{font-size:19px;flex:none}
+.lv.final p{margin:0;color:var(--mist);font-size:14.5px;font-family:var(--font-body);flex:1}
+.hicon{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;background:var(--hue-bg);color:var(--hue);flex:none}
+.hicon svg{width:34px;height:34px}
+.sheet header .ttl{display:flex;gap:12px;align-items:center}
 
 .overlay{position:fixed;inset:0;background:rgba(2,18,22,.72);display:none;align-items:flex-end;justify-content:center;z-index:10}
 .overlay.on{display:flex}
@@ -115,7 +136,7 @@ dl.sum dd{margin:0}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--foam);color:#04302c;border-radius:999px;padding:10px 18px;font-family:var(--font-display);z-index:20;display:none;max-width:calc(100% - 32px);text-align:center}
 .toast.on{display:block}
 .loading{min-height:60vh;display:grid;place-items:center;color:var(--mist);text-align:center;padding:24px}
-@media(prefers-reduced-motion:reduce){.lv{transition:none}.lv:hover{transform:none}}
+@media(prefers-reduced-motion:reduce){.lv{transition:none}.lv:hover{transform:none}.mascot svg,.lv.open .scene>svg{animation:none}}
 </style>
 </head>
 <body>
@@ -126,8 +147,8 @@ dl.sum dd{margin:0}
 <script>
 /* ============ ตั้งค่า: แก้ 2 บรรทัดแรกหลังติดตั้งตามคู่มือ ============ */
 const CONFIG = {
-  LIFF_ID: "2012651182-FZzRzRxm",
-  API_URL: "https://script.google.com/macros/s/AKfycbzpHUGFry2hbZuyiiorgbSIPrKL-xYfXaaOOUcqtSvcoitDk2lY3B5XNOezKxxIneq8aw/exec", 
+  LIFF_ID: "2012651182-FZzRzRxm",   // LIFF ID จาก LINE Developers เช่น "1234567890-AbcdEfgh"
+  API_URL: "https://script.google.com/macros/s/AKfycbzpHUGFry2hbZuyiiorgbSIPrKL-xYfXaaOOUcqtSvcoitDk2lY3B5XNOezKxxIneq8aw/exec",   // Web app URL ของ Google Apps Script (ลงท้ายด้วย /exec)
   ED_URL: "",    // ลิงก์เข้าระบบ English Discoveries ของมหาวิทยาลัย (เว้นว่างได้)
   PASS_SCORE: 80
 };
@@ -147,6 +168,43 @@ let state = {registered:false, player:null, levels:{}};
 let profile = {displayName:"", pictureUrl:""};
 const $ = id => document.getElementById(id);
 const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---------- ภาพประจำด่านและตัวการ์ตูน ---------- */
+const IC = d => '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+const ICONS = [
+  '<path d="M17 34C5 25 8 13 17 17c9-4 12 8 0 17z"/><path d="M33 30c-8-6-6-14 0-11 6-3 8 5 0 11z"/>',
+  '<circle cx="24" cy="24" r="16"/><path d="M12 13c6 6 6 16 0 22M36 13c-6 6-6 16 0 22"/>',
+  '<rect x="8" y="16" width="32" height="22" rx="3"/><path d="M18 16v-4h12v4M24 22v7M24 33v.5"/>',
+  '<path d="M24 22c-8-6-6-14 0-11 6-3 8 5 0 11z"/><path d="M8 28v12M8 34h8l8 4h10c4 0 6-4 2-6h-8"/>',
+  '<circle cx="24" cy="24" r="16"/><path d="M17 27c3 5 11 5 14 0M18 20v.5M30 20v.5"/>',
+  '<path d="M18 34V14l16-4v20"/><circle cx="14" cy="34" r="4"/><circle cx="30" cy="30" r="4"/>',
+  '<circle cx="26" cy="26" r="10"/><path d="M8 10v12M12 10v12M8 22h4M10 22v18M42 10v30M42 10c-4 4-4 12 0 14"/>',
+  '<path d="M6 10h22v14H16l-6 5v-5H6z"/><path d="M33 20h9v13h-3v5l-6-5h-9v-4"/>',
+  '<path d="M10 38c0-18 12-28 30-28 0 18-10 28-28 28M10 38l20-18"/>',
+  '<path d="M24 6l5 11 12 1.5-9 8 2.5 12L24 32l-10.5 6.5 2.5-12-9-8 12-1.5z"/>',
+  '<circle cx="24" cy="24" r="16"/><path d="M8 24h32M24 8c-7 7-7 25 0 32M24 8c7 7 7 25 0 32"/>',
+  '<path d="M4 40h40M6 40V20h10v20M16 40V10h14v30M30 40V24h12v16M21 16h4M21 22h4M21 28h4"/>',
+  '<path d="M4 40l14-24 8 12 6-8 12 20zM18 16V6l8 3-8 3"/>',
+  '<path d="M8 20v8h6l14 8V12L14 20zM34 18c3 3 3 9 0 12M39 14c5 6 5 14 0 20"/>',
+  '<path d="M6 8v32h36M12 32l9-10 7 6 12-14M33 14h7v7"/>',
+  '<rect x="15" y="6" width="18" height="36" rx="4"/><path d="M22 36h4M21 12h6"/>',
+  '<path d="M19 8h10v11h11v10H29v11H19V29H8V19h11z"/>',
+  '<path d="M16 22a8 8 0 1 1 16 0c0 5-4 6-4 11h-8c0-5-4-6-4-11zM20 38h8M21 42h6"/>',
+  '<path d="M24 32V16M24 20c-6 0-9-4-9-8 6 0 9 3 9 8zM24 16c0-5 3-8 9-8 0 5-3 8-9 8zM10 40c6-7 22-7 28 0"/>',
+  '<path d="M6 18L24 6l18 12zM10 18v18M19 18v18M29 18v18M38 18v18M6 40h36"/>',
+  '<path d="M16 8h16v10a8 8 0 0 1-16 0zM16 12H9c0 6 3 9 7 9M32 12h7c0 6-3 9-7 9M24 26v8M19 34h10v6M16 40h16"/>'
+];
+const HUES = ["#3fd0c1","#ffc94a","#ff8370","#b9a3ff","#7ddc8a"];
+const hueStyle = n => { const c = n === TOTAL ? "#ffc94a" : HUES[(n-1) % HUES.length]; return 'style="--hue:' + c + ';--hue-bg:' + c + '2b"'; };
+const B = d => '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + d + '</svg>';
+const BADGE = {
+  pass: B('<path d="M12 3l2.700 5.600 6.100.800-4.5 4.200 1.200 6.100L12 16.700l-5.5 3 1.200-6.100L3.200 9.400l6.100-.800z"/>'),
+  pending: B('<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>'),
+  fail: B('<path d="M12 6v8M12 18v.5"/>'),
+  locked: B('<rect x="5.5" y="11" width="13" height="9" rx="2"/><path d="M8.5 11V8a3.5 3.5 0 0 1 7 0v3"/>'),
+  open: ""
+};
+const MASCOT = '<svg aria-hidden="true" viewBox="20 14 280 304"><ellipse cx="160" cy="304" rx="96" ry="11" fill="#021a21" opacity="0.55"/><g transform="rotate(28 78 270)"><ellipse cx="70" cy="270" rx="46" ry="22" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><path d="M48 252 q8 18 0 36 M72 249 q8 21 0 42" fill="none" stroke="#7a4a2b" stroke-width="9" stroke-linecap="round"/></g><ellipse cx="124" cy="294" rx="30" ry="15" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="196" cy="294" rx="30" ry="15" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="160" cy="236" rx="72" ry="64" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="160" cy="246" rx="52" ry="48" fill="#fff8ee"/><g transform="rotate(-38 76 200)"><ellipse cx="76" cy="200" rx="24" ry="38" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="76" cy="184" rx="10" ry="8" fill="#f2a0a0"/><circle cx="62" cy="170" r="4.5" fill="#f2a0a0"/><circle cx="76" cy="165" r="4.5" fill="#f2a0a0"/><circle cx="90" cy="170" r="4.5" fill="#f2a0a0"/></g><g transform="rotate(38 244 200)"><ellipse cx="244" cy="200" rx="24" ry="38" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="244" cy="184" rx="10" ry="8" fill="#f2a0a0"/><circle cx="230" cy="170" r="4.5" fill="#f2a0a0"/><circle cx="244" cy="165" r="4.5" fill="#f2a0a0"/><circle cx="258" cy="170" r="4.5" fill="#f2a0a0"/></g><circle cx="80" cy="76" r="30" fill="#7a4a2b" stroke="#6b4226" stroke-width="5"/><circle cx="80" cy="76" r="17" fill="#fff8ee"/><circle cx="240" cy="76" r="30" fill="#7a4a2b" stroke="#6b4226" stroke-width="5"/><circle cx="240" cy="76" r="17" fill="#fff8ee"/><ellipse cx="160" cy="120" rx="86" ry="74" fill="#c9a27e" stroke="#6b4226" stroke-width="5"/><ellipse cx="116" cy="92" rx="24" ry="12" transform="rotate(-18 116 92)" fill="#fff8ee"/><ellipse cx="204" cy="92" rx="24" ry="12" transform="rotate(18 204 92)" fill="#fff8ee"/><ellipse cx="122" cy="126" rx="32" ry="25" transform="rotate(-14 122 126)" fill="#7a4a2b"/><ellipse cx="198" cy="126" rx="32" ry="25" transform="rotate(14 198 126)" fill="#7a4a2b"/><ellipse cx="160" cy="150" rx="36" ry="30" fill="#fff8ee"/><circle cx="126" cy="124" r="14" fill="#1b1210"/><circle cx="194" cy="124" r="14" fill="#1b1210"/><circle cx="131" cy="119" r="5" fill="#ffffff"/><circle cx="199" cy="119" r="5" fill="#ffffff"/><circle cx="121" cy="130" r="2.5" fill="#ffffff"/><circle cx="189" cy="130" r="2.5" fill="#ffffff"/><ellipse cx="160" cy="136" rx="13" ry="9" fill="#4a2c1a"/><path d="M148 154 Q160 172 172 154 Z" fill="#e2485a" stroke="#6b4226" stroke-width="4" stroke-linejoin="round"/><circle cx="96" cy="152" r="9" fill="#f2a0a0" opacity="0.8"/><circle cx="224" cy="152" r="9" fill="#f2a0a0" opacity="0.8"/><g transform="translate(32 6) scale(0.8)"><path d="M124 66 V86 Q160 104 196 86 V66 Z" fill="#e0a92e" stroke="#3a2a00" stroke-width="6" stroke-linejoin="round"/><path d="M88 54 L160 26 L232 54 L160 82 Z" fill="#ffc94a" stroke="#3a2a00" stroke-width="6" stroke-linejoin="round"/><line x1="232" y1="54" x2="232" y2="86" stroke="#ff8370" stroke-width="6" stroke-linecap="round"/><circle cx="232" cy="92" r="9" fill="#ff8370"/></g></svg>';
 
 /* ---------- กติกาปลดล็อกด่าน ---------- */
 function isUnlocked(n){
@@ -229,22 +287,31 @@ function render(){
   if (passed === TOTAL) banner = '<div class="banner win"><h2>ภารกิจสำเร็จ ผ่านครบ 21 ด่าน</h2><p>ผู้ตรวจยืนยันแล้วว่าอบรมครบ 100% และผ่านแบบทดสอบ ' + CONFIG.PASS_SCORE + '% ขึ้นไปทุกบท</p></div>';
   else if (sent === TOTAL) banner = '<div class="banner"><h2>ส่งหลักฐานครบ 21 ด่านแล้ว</h2><p>รอผู้ตรวจยืนยันผล ตรวจแล้ว ' + passed + ' จาก ' + TOTAL + ' ด่าน</p></div>';
 
-  let cards = "";
+  let cards = "", failAt = 0, openAt = 0;
   for (let n = 1; n <= TOTAL; n++){
     const k = levelKey(n), fin = n === TOTAL;
-    cards += '<button type="button" class="lv ' + k + (fin ? " final" : "") + '" data-level="' + n + '">' +
-      '<span class="n"><span>ด่าน</span><b>' + n + '</b></span>' +
-      '<span class="t">' + esc(LEVELS[n-1]) + '</span>' +
-      (fin ? '<p>ด่านสุดท้าย อัดคลิปวิดีโอนำทักษะจาก 20 ด่านไปใช้ในการปฏิบัติงานจริง</p>' : '') +
-      '<span class="chip">' + KEY_LABEL[k] + '</span></button>';
+    if (k === "fail" && !failAt) failAt = n;
+    if (k === "open" && !openAt) openAt = n;
+    cards += '<button type="button" class="lv ' + k + (fin ? " final" : "") + '" data-level="' + n + '" ' + hueStyle(n) + '>' +
+      '<span class="scene"><span class="num">ด่าน ' + n + '</span>' + (BADGE[k] ? '<span class="badge">' + BADGE[k] + '</span>' : '') + IC(ICONS[n-1]) + '</span>' +
+      '<span class="info"><span class="t">' + esc(LEVELS[n-1]) + '</span>' +
+      (fin ? '<p>ด่านบอส อัดคลิปวิดีโอนำทักษะจาก 20 ด่านไปใช้ในการปฏิบัติงานจริง</p>' : '') +
+      '<span class="chip">' + KEY_LABEL[k] + '</span></span></button>';
   }
+  let say;
+  if (passed === TOTAL) say = "ยอดเยี่ยมมาก! คุณพิชิตครบ 21 ด่านแล้ว";
+  else if (failAt) say = "ด่าน " + failAt + " ต้องส่งใหม่นะ กดเข้าไปดูเหตุผลจากผู้ตรวจได้เลย";
+  else if (openAt === 1) say = "ยินดีต้อนรับ! เริ่มภารกิจแรกที่ด่าน 1 " + LEVELS[0] + " กันเลย";
+  else if (openAt) say = "เก่งมาก! ภารกิจต่อไปคือด่าน " + openAt + " " + LEVELS[openAt-1];
+  else say = "ส่งครบทุกด่านแล้ว รอผู้ตรวจยืนยันผลนะ";
   $("app").innerHTML =
     (DEMO ? '<div class="demo"><span><strong>โหมดทดลอง</strong> ข้อมูลตัวอย่าง เก็บในเครื่องนี้เท่านั้น ยังไม่ได้เชื่อม LINE</span>' +
       '<button type="button" id="demo-approve">จำลองผู้ตรวจ ให้ผ่านทุกด่านที่ส่ง</button><button type="button" id="demo-reset">เริ่มใหม่</button></div>' : '') +
     '<section class="top"><div class="who"><div class="avatar">' + avatar + '</div><div><small>English Quest · มหาวิทยาลัยราชภัฏภูเก็ต</small><h1>' + esc(name) + '</h1></div></div>' +
     '<div class="stats"><span><b>' + sent + '/' + TOTAL + '</b>ด่านที่ส่งแล้ว</span><span><b>' + passed + '/' + TOTAL + '</b>ด่านที่ผู้ตรวจให้ผ่าน</span></div>' +
     '<div class="bar" aria-hidden="true"><i class="ok" style="width:' + (passed/TOTAL*100) + '%"></i><i class="wait" style="width:' + ((sent-passed)/TOTAL*100) + '%"></i></div>' +
-    '<div class="legend"><span>ผ่านแล้ว</span><span class="w">รอตรวจ</span></div></section>' +
+    '<div class="legend"><span>ผ่านแล้ว</span><span class="w">รอตรวจ</span></div>' +
+    '<div class="coach"><div class="mascot">' + MASCOT + '</div><p class="bubble">' + esc(say) + '</p></div></section>' +
     banner +
     '<details class="rules"><summary>กติกาการเล่น</summary><ol>' +
     '<li>เรียนแต่ละบทในระบบ English Discoveries ให้ครบ 100%</li>' +
@@ -259,7 +326,7 @@ function render(){
 let busy = false;
 function openSheet(html){ $("sheet").innerHTML = html; $("overlay").classList.add("on"); const x = $("sheet").querySelector(".x"); if (x) x.focus(); }
 function closeSheet(){ if (busy) return; $("overlay").classList.remove("on"); $("sheet").innerHTML = ""; }
-function head(n){ return '<header><div><small>ด่าน ' + n + ' จาก ' + TOTAL + '</small><h2 id="sheet-title">' + esc(LEVELS[n-1]) + '</h2></div><button type="button" class="x" data-close aria-label="ปิด">✕</button></header>'; }
+function head(n){ return '<header><div class="ttl"><span class="hicon" ' + hueStyle(n) + '>' + IC(ICONS[n-1]) + '</span><div><small>ด่าน ' + n + ' จาก ' + TOTAL + '</small><h2 id="sheet-title">' + esc(LEVELS[n-1]) + '</h2></div></div><button type="button" class="x" data-close aria-label="ปิด">✕</button></header>'; }
 
 function openLevel(n){
   const k = levelKey(n), r = state.levels[n];
